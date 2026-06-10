@@ -1,0 +1,32 @@
+name: BetterAudit
+version: ${project.version}
+main: dev.nikhey.betteraudit.BetterAuditPlugin
+api-version: '1.21'
+folia-supported: true
+author: Nikhey
+description: The black box recorder for your staff team.
+website: https://github.com/DevNikhey
+
+commands:
+  audit:
+    description: Query the staff audit log
+    usage: /audit <recent|player|type|stats|purge|reload> [args]
+    aliases: [ba, betteraudit]
+    permission: betteraudit.use
+
+permissions:
+  betteraudit.use:
+    description: Query the audit log
+    default: op
+  betteraudit.admin:
+    description: Purge the log and reload the config
+    default: op
+  betteraudit.notify:
+    description: Receive in-game alerts for high-risk staff actions
+    default: op
+  betteraudit.tracked:
+    description: Players with this permission are recorded (ops always are)
+    default: false
+  betteraudit.exempt:
+    description: Never record this player
+    default: false

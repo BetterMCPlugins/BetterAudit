@@ -1,0 +1,69 @@
+# BetterAudit configuration
+# Every module can be switched off independently - no bloat, no surprises.
+
+tracking:
+  # STAFF = record ops and players with the betteraudit.tracked permission.
+  # ALL   = record every player (useful for small servers).
+  mode: STAFF
+
+modules:
+  # Log every command tracked players run.
+  commands: true
+  # Log gamemode changes.
+  gamemode: true
+  # Log items taken from the creative inventory.
+  creative-items: true
+  # Log /op and /deop usage (including from console).
+  op-changes: true
+  # Log join/leave sessions and playtime per staff member.
+  sessions: true
+  # Log punishment commands (ban, mute, kick, ...) even when 'commands' is off.
+  punishments: true
+
+# Commands that are NEVER logged. Auth commands are excluded by default so
+# passwords can not end up in the audit log.
+ignored-commands:
+  - login
+  - l
+  - register
+  - reg
+  - changepassword
+  - premium
+  - 2fa
+
+# The first word of a command that should be classified as a punishment.
+punishment-commands:
+  - ban
+  - tempban
+  - ipban
+  - banip
+  - ban-ip
+  - unban
+  - pardon
+  - pardon-ip
+  - mute
+  - tempmute
+  - unmute
+  - kick
+  - warn
+  - unwarn
+  - blacklist
+
+# Which action types trigger alerts (in-game to betteraudit.notify holders,
+# and to Discord if enabled below).
+# Available: COMMAND, GAMEMODE, CREATIVE_TAKE, OP_CHANGE, PUNISHMENT, SESSION_START, SESSION_END
+alerts:
+  - GAMEMODE
+  - CREATIVE_TAKE
+  - OP_CHANGE
+  - PUNISHMENT
+
+notify:
+  ingame: true
+
+discord:
+  enabled: false
+  webhook-url: ""
+
+# Audit entries older than this many days are deleted automatically. 0 = keep forever.
+retention-days: 90
