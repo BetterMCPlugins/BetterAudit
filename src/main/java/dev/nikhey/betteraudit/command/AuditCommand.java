@@ -2,6 +2,7 @@ package dev.nikhey.betteraudit.command;
 
 import dev.nikhey.betteraudit.BetterAuditPlugin;
 import dev.nikhey.betteraudit.listener.SessionListener;
+import dev.nikhey.betteraudit.menu.AuditMenu;
 import dev.nikhey.betteraudit.model.ActionType;
 import dev.nikhey.betteraudit.model.AuditEntry;
 import dev.nikhey.betteraudit.storage.AuditStore;
@@ -29,14 +30,16 @@ public final class AuditCommand implements TabExecutor {
     private static final DateTimeFormatter TIME_FORMAT =
             DateTimeFormatter.ofPattern("MMM d HH:mm").withZone(ZoneId.systemDefault());
     private static final List<String> SUBCOMMANDS =
-            List.of("recent", "player", "type", "stats", "purge", "reload");
+            List.of("menu", "recent", "player", "type", "stats", "purge", "reload");
 
     private final BetterAuditPlugin plugin;
     private final AuditStore store;
+    private final AuditMenu menu;
 
-    public AuditCommand(BetterAuditPlugin plugin, AuditStore store) {
+    public AuditCommand(BetterAuditPlugin plugin, AuditStore store, AuditMenu menu) {
         this.plugin = plugin;
         this.store = store;
+        this.menu = menu;
     }
 
     @Override
@@ -46,6 +49,13 @@ public final class AuditCommand implements TabExecutor {
             return true;
         }
         switch (args[0].toLowerCase(Locale.ROOT)) {
+            case "menu" -> {
+                if (!(sender instanceof Player player)) {
+                    sender.sendMessage(Component.text("The menu is only available in-game.", NamedTextColor.RED));
+                    return true;
+                }
+                menu.open(player);
+            }
             case "recent" -> {
                 int page = parsePage(args, 1);
                 store.recent(PAGE_SIZE, (page - 1) * PAGE_SIZE)
@@ -225,6 +235,8 @@ public final class AuditCommand implements TabExecutor {
 
     private void sendHelp(CommandSender sender) {
         sender.sendMessage(Component.text("BetterAudit — staff activity log", NamedTextColor.GOLD));
+        sender.sendMessage(Component.text("  /audit menu", NamedTextColor.GRAY)
+                .append(Component.text(" — staff overview (click a head)", NamedTextColor.DARK_GRAY)));
         sender.sendMessage(Component.text("  /audit recent [page]", NamedTextColor.GRAY)
                 .append(Component.text(" — latest entries", NamedTextColor.DARK_GRAY)));
         sender.sendMessage(Component.text("  /audit player <name> [page]", NamedTextColor.GRAY)

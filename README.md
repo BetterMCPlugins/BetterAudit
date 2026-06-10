@@ -29,6 +29,7 @@ BetterAudit is one small, modern, free plugin that answers three questions:
 
 | Command | Description | Permission |
 |---|---|---|
+| `/audit menu` | Staff overview GUI — click a head for that player's timeline | `betteraudit.use` |
 | `/audit recent [page]` | Latest entries across the server | `betteraudit.use` |
 | `/audit player <name> [page]` | One player's timeline | `betteraudit.use` |
 | `/audit type <type> [page]` | Filter by action type | `betteraudit.use` |

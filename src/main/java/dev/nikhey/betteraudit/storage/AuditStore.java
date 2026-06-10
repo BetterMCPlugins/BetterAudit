@@ -30,6 +30,9 @@ public final class AuditStore {
     public record Stats(Map<ActionType, Integer> counts, long totalSessionSeconds, long firstSeen, long lastSeen) {
     }
 
+    public record ActorSummary(UUID uuid, String name, int entries, long lastTime) {
+    }
+
     private final File file;
     private final Logger logger;
     private final ExecutorService io;
@@ -121,6 +124,30 @@ public final class AuditStore {
                     ps.setInt(2, limit);
                     ps.setInt(3, offset);
                 });
+    }
+
+    public CompletableFuture<List<ActorSummary>> actors() {
+        CompletableFuture<List<ActorSummary>> future = new CompletableFuture<>();
+        io.execute(() -> {
+            // Bare actor_name alongside MAX(time) makes SQLite pick the name from
+            // the most recent row, so renamed players show their latest name.
+            try (PreparedStatement ps = conn.prepareStatement(
+                    "SELECT actor_uuid, actor_name, COUNT(*) c, MAX(time) t FROM audit GROUP BY actor_uuid ORDER BY t DESC");
+                 ResultSet rs = ps.executeQuery()) {
+                List<ActorSummary> actors = new ArrayList<>();
+                while (rs.next()) {
+                    actors.add(new ActorSummary(
+                            UUID.fromString(rs.getString("actor_uuid")),
+                            rs.getString("actor_name"),
+                            rs.getInt("c"),
+                            rs.getLong("t")));
+                }
+                future.complete(actors);
+            } catch (SQLException e) {
+                future.completeExceptionally(e);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<Stats> stats(String name) {

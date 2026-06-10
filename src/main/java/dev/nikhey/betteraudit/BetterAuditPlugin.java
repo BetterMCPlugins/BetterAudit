@@ -7,6 +7,7 @@ import dev.nikhey.betteraudit.listener.CommandListener;
 import dev.nikhey.betteraudit.listener.CreativeListener;
 import dev.nikhey.betteraudit.listener.GameModeListener;
 import dev.nikhey.betteraudit.listener.SessionListener;
+import dev.nikhey.betteraudit.menu.AuditMenu;
 import dev.nikhey.betteraudit.storage.AuditStore;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -44,9 +45,12 @@ public final class BetterAuditPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CreativeListener(this::settings, recorder), this);
         getServer().getPluginManager().registerEvents(new SessionListener(this::settings, recorder), this);
 
+        AuditMenu menu = new AuditMenu(this, store);
+        getServer().getPluginManager().registerEvents(menu, this);
+
         PluginCommand command = getCommand("audit");
         if (command != null) {
-            AuditCommand executor = new AuditCommand(this, store);
+            AuditCommand executor = new AuditCommand(this, store, menu);
             command.setExecutor(executor);
             command.setTabCompleter(executor);
         }
