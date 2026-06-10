@@ -67,6 +67,9 @@ public final class CommandListener implements Listener {
         if (s.isInspectionCommand(root)) {
             return ActionType.INSPECTION;
         }
+        if (s.isEconomyCommand(root)) {
+            return ActionType.ECONOMY;
+        }
         return ActionType.COMMAND;
     }
 
@@ -75,6 +78,7 @@ public final class CommandListener implements Listener {
             case OP_CHANGE -> s.opChangesEnabled();
             case PUNISHMENT -> s.punishmentsEnabled();
             case INSPECTION -> s.inspectionsEnabled();
+            case ECONOMY -> s.economyEnabled();
             default -> s.commandsEnabled();
         };
     }

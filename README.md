@@ -16,7 +16,7 @@ BetterAudit is one small, modern, free plugin that answers three questions:
 
 ## Features
 
-- **Nine independent modules**, each toggleable: command log, gamemode changes, creative item takes, op/deop tracking, join/leave sessions with playtime, punishment commands, inventory inspections, vanish time, permission changes.
+- **Ten independent modules**, each toggleable: command log, gamemode changes, creative item takes, op/deop tracking, join/leave sessions with playtime, punishment commands, inventory inspections, economy actions, vanish time, permission changes.
 - **Discord webhook alerts** with per-action-type filtering — audit from your phone.
 - **In-game alerts** for everyone with `betteraudit.notify`.
 - **Queryable timeline**: `/audit recent`, `/audit player`, `/audit type`, with clickable pagination and hover coordinates.
@@ -32,6 +32,8 @@ BetterAudit is one small, modern, free plugin that answers three questions:
 | **SuperVanish / PremiumVanish** | Vanish toggles logged with time spent vanished; total shown in `/audit stats` |
 | **LuckPerms** | Every rank/permission change recorded with the staff member who made it — including web editor changes |
 | **PlaceholderAPI** | `%betteraudit_entries%`, `%betteraudit_punishments%`, `%betteraudit_playtime%` |
+| **EssentialsX** | Balance changes on tracked players (old → new amount with cause), plus Essentials' own `/vanish` with time-vanished tracking |
+| **Economy (any plugin)** | Economy admin commands (`/eco give`, ...) get their own ECONOMY action type. Console commands count too, so donation-store (Tebex) payouts show up |
 | **OpenInv / InvSee++ / Essentials** | Inspection commands (`/invsee`, `/openinv`, `/ec`, ...) get their own INSPECTION action type — configurable list, no API needed |
 
 ## Commands

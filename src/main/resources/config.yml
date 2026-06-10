@@ -21,6 +21,8 @@ modules:
   punishments: true
   # Log inventory inspection commands (invsee, openinv, ...) even when 'commands' is off.
   inspections: true
+  # Log economy admin commands and (with EssentialsX) balance changes on tracked players.
+  economy: true
   # Log vanish toggles + time spent vanished (needs SuperVanish or PremiumVanish).
   vanish: true
   # Log rank/permission changes with the staff member who made them (needs LuckPerms).
@@ -65,10 +67,21 @@ inspection-commands:
   - echest
   - ec
 
+# The first word of a command that should be classified as an economy action.
+# Console economy commands are logged too - donation stores (Tebex etc.)
+# execute through console, so store-driven /eco gives show up in the log.
+economy-commands:
+  - eco
+  - economy
+  - givemoney
+  - takemoney
+  - setmoney
+  - setbalance
+
 # Which action types trigger alerts (in-game to betteraudit.notify holders,
 # and to Discord if enabled below).
 # Available: COMMAND, GAMEMODE, CREATIVE_TAKE, OP_CHANGE, PUNISHMENT,
-#            INSPECTION, VANISH, PERMISSION_CHANGE, SESSION_START, SESSION_END
+#            INSPECTION, ECONOMY, VANISH, PERMISSION_CHANGE, SESSION_START, SESSION_END
 alerts:
   - GAMEMODE
   - CREATIVE_TAKE

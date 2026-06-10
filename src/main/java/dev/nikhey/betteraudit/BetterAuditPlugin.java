@@ -78,6 +78,10 @@ public final class BetterAuditPlugin extends JavaPlugin {
             pm.registerEvents(new dev.nikhey.betteraudit.hook.VanishHook(this::settings, recorder), this);
             getSLF4JLogger().info("Hooked into SuperVanish/PremiumVanish - tracking vanish time.");
         }
+        if (pm.getPlugin("Essentials") != null) {
+            pm.registerEvents(new dev.nikhey.betteraudit.hook.EssentialsHook(this::settings, recorder), this);
+            getSLF4JLogger().info("Hooked into EssentialsX - tracking balance changes and vanish.");
+        }
         if (pm.getPlugin("LuckPerms") != null) {
             dev.nikhey.betteraudit.hook.LuckPermsHook.register(this, this::settings, recorder);
             getSLF4JLogger().info("Hooked into LuckPerms - tracking permission changes.");
