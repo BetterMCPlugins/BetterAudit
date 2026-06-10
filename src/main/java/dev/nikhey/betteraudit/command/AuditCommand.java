@@ -223,6 +223,13 @@ public final class AuditCommand implements TabExecutor {
                 .append(Component.text(SessionListener.formatDuration(stats.totalSessionSeconds()),
                         NamedTextColor.WHITE))
                 .build());
+        if (stats.vanishSeconds() > 0) {
+            sender.sendMessage(Component.text()
+                    .append(Component.text("  Time vanished: ", NamedTextColor.GRAY))
+                    .append(Component.text(SessionListener.formatDuration(stats.vanishSeconds()),
+                            NamedTextColor.WHITE))
+                    .build());
+        }
         if (stats.lastSeen() > 0) {
             sender.sendMessage(Component.text()
                     .append(Component.text("  First / last entry: ", NamedTextColor.GRAY))

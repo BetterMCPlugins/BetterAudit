@@ -6,6 +6,9 @@ public enum ActionType {
     CREATIVE_TAKE("Creative item", 0xE74C3C),
     OP_CHANGE("Op change", 0xC0392B),
     PUNISHMENT("Punishment", 0x9B59B6),
+    INSPECTION("Inspection", 0x2980B9),
+    VANISH("Vanish", 0x1ABC9C),
+    PERMISSION_CHANGE("Permission change", 0xF1C40F),
     SESSION_START("Joined", 0x2ECC71),
     SESSION_END("Left", 0x3498DB);
 

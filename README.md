@@ -16,14 +16,23 @@ BetterAudit is one small, modern, free plugin that answers three questions:
 
 ## Features
 
-- **Six independent modules**, each toggleable: command log, gamemode changes, creative item takes, op/deop tracking, join/leave sessions with playtime, punishment commands.
+- **Nine independent modules**, each toggleable: command log, gamemode changes, creative item takes, op/deop tracking, join/leave sessions with playtime, punishment commands, inventory inspections, vanish time, permission changes.
 - **Discord webhook alerts** with per-action-type filtering — audit from your phone.
 - **In-game alerts** for everyone with `betteraudit.notify`.
 - **Queryable timeline**: `/audit recent`, `/audit player`, `/audit type`, with clickable pagination and hover coordinates.
 - **Per-staff stats**: action counts, recorded playtime, first/last seen.
 - **Privacy-aware**: auth commands (`/login`, `/register`, ...) are never logged, so passwords can't leak into the database.
 - **Automatic retention**: entries older than N days are purged on a schedule.
-- **Zero dependencies, async everywhere**: SQLite storage on a dedicated thread, never on the main thread. Folia-supported.
+- **Zero hard dependencies, async everywhere**: SQLite storage on a dedicated thread, never on the main thread. Folia-supported.
+
+## Integrations (all optional, auto-detected)
+
+| Plugin | What you get |
+|---|---|
+| **SuperVanish / PremiumVanish** | Vanish toggles logged with time spent vanished; total shown in `/audit stats` |
+| **LuckPerms** | Every rank/permission change recorded with the staff member who made it — including web editor changes |
+| **PlaceholderAPI** | `%betteraudit_entries%`, `%betteraudit_punishments%`, `%betteraudit_playtime%` |
+| **OpenInv / InvSee++ / Essentials** | Inspection commands (`/invsee`, `/openinv`, `/ec`, ...) get their own INSPECTION action type — configurable list, no API needed |
 
 ## Commands
 
@@ -61,5 +70,4 @@ Requires Java 21+. The jar lands in `target/BetterAudit-<version>.jar`. Drop it 
 
 - Web dashboard (paid tier)
 - Velocity network sync (paid tier)
-- Vanish duration tracking via common vanish plugin hooks
-- Inventory inspection (invsee) logging
+- Bidirectional Discord bot (query the log from Discord)

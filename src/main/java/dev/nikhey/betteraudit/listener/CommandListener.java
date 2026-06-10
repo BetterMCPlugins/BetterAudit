@@ -64,6 +64,9 @@ public final class CommandListener implements Listener {
         if (s.isPunishmentCommand(root)) {
             return ActionType.PUNISHMENT;
         }
+        if (s.isInspectionCommand(root)) {
+            return ActionType.INSPECTION;
+        }
         return ActionType.COMMAND;
     }
 
@@ -71,6 +74,7 @@ public final class CommandListener implements Listener {
         return switch (type) {
             case OP_CHANGE -> s.opChangesEnabled();
             case PUNISHMENT -> s.punishmentsEnabled();
+            case INSPECTION -> s.inspectionsEnabled();
             default -> s.commandsEnabled();
         };
     }

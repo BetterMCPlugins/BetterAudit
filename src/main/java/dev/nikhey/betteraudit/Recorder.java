@@ -43,6 +43,11 @@ public final class Recorder {
         record(CONSOLE_UUID, CONSOLE_NAME, type, detail, null, 0, 0, 0, 0);
     }
 
+    /** For hooks whose actor may be offline (e.g. LuckPerms changes from a web editor). */
+    public void recordOffline(UUID uuid, String name, ActionType type, String detail) {
+        record(uuid, name, type, detail, null, 0, 0, 0, 0);
+    }
+
     private void record(UUID uuid, String name, ActionType type, String detail,
                         String world, int x, int y, int z, long durationSeconds) {
         store.insert(System.currentTimeMillis(), uuid, name, type, detail, world, x, y, z, durationSeconds);

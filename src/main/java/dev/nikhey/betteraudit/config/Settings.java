@@ -22,8 +22,12 @@ public final class Settings {
     private final boolean modOpChanges;
     private final boolean modSessions;
     private final boolean modPunishments;
+    private final boolean modInspections;
+    private final boolean modVanish;
+    private final boolean modPermissionChanges;
     private final Set<String> ignoredCommands;
     private final Set<String> punishmentCommands;
+    private final Set<String> inspectionCommands;
     private final Set<ActionType> alerts;
     private final boolean notifyIngame;
     private final boolean discordEnabled;
@@ -38,8 +42,12 @@ public final class Settings {
         this.modOpChanges = c.getBoolean("modules.op-changes", true);
         this.modSessions = c.getBoolean("modules.sessions", true);
         this.modPunishments = c.getBoolean("modules.punishments", true);
+        this.modInspections = c.getBoolean("modules.inspections", true);
+        this.modVanish = c.getBoolean("modules.vanish", true);
+        this.modPermissionChanges = c.getBoolean("modules.permission-changes", true);
         this.ignoredCommands = lowered(c.getStringList("ignored-commands"));
         this.punishmentCommands = lowered(c.getStringList("punishment-commands"));
+        this.inspectionCommands = lowered(c.getStringList("inspection-commands"));
         this.alerts = EnumSet.noneOf(ActionType.class);
         for (String name : c.getStringList("alerts")) {
             try {
@@ -96,12 +104,28 @@ public final class Settings {
         return modPunishments;
     }
 
+    public boolean inspectionsEnabled() {
+        return modInspections;
+    }
+
+    public boolean vanishEnabled() {
+        return modVanish;
+    }
+
+    public boolean permissionChangesEnabled() {
+        return modPermissionChanges;
+    }
+
     public boolean isIgnoredCommand(String root) {
         return ignoredCommands.contains(root);
     }
 
     public boolean isPunishmentCommand(String root) {
         return punishmentCommands.contains(root);
+    }
+
+    public boolean isInspectionCommand(String root) {
+        return inspectionCommands.contains(root);
     }
 
     public boolean alertsFor(ActionType type) {

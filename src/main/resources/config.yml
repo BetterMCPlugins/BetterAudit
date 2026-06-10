@@ -19,6 +19,12 @@ modules:
   sessions: true
   # Log punishment commands (ban, mute, kick, ...) even when 'commands' is off.
   punishments: true
+  # Log inventory inspection commands (invsee, openinv, ...) even when 'commands' is off.
+  inspections: true
+  # Log vanish toggles + time spent vanished (needs SuperVanish or PremiumVanish).
+  vanish: true
+  # Log rank/permission changes with the staff member who made them (needs LuckPerms).
+  permission-changes: true
 
 # Commands that are NEVER logged. Auth commands are excluded by default so
 # passwords can not end up in the audit log.
@@ -49,14 +55,26 @@ punishment-commands:
   - unwarn
   - blacklist
 
+# The first word of a command that should be classified as an inspection.
+inspection-commands:
+  - invsee
+  - openinv
+  - oi
+  - openender
+  - enderchest
+  - echest
+  - ec
+
 # Which action types trigger alerts (in-game to betteraudit.notify holders,
 # and to Discord if enabled below).
-# Available: COMMAND, GAMEMODE, CREATIVE_TAKE, OP_CHANGE, PUNISHMENT, SESSION_START, SESSION_END
+# Available: COMMAND, GAMEMODE, CREATIVE_TAKE, OP_CHANGE, PUNISHMENT,
+#            INSPECTION, VANISH, PERMISSION_CHANGE, SESSION_START, SESSION_END
 alerts:
   - GAMEMODE
   - CREATIVE_TAKE
   - OP_CHANGE
   - PUNISHMENT
+  - PERMISSION_CHANGE
 
 notify:
   ingame: true

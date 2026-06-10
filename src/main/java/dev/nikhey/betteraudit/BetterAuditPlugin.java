@@ -48,6 +48,8 @@ public final class BetterAuditPlugin extends JavaPlugin {
         AuditMenu menu = new AuditMenu(this, store);
         getServer().getPluginManager().registerEvents(menu, this);
 
+        registerHooks(recorder);
+
         PluginCommand command = getCommand("audit");
         if (command != null) {
             AuditCommand executor = new AuditCommand(this, store, menu);
@@ -64,6 +66,26 @@ public final class BetterAuditPlugin extends JavaPlugin {
         maintenance.scheduleAtFixedRate(this::runRetention, 1, 60 * 12, TimeUnit.MINUTES);
 
         getSLF4JLogger().info("BetterAudit enabled - your staff black box is recording.");
+    }
+
+    /**
+     * Optional integrations. Each hook class is only loaded (and its plugin
+     * classes only touched) when the target plugin is actually installed.
+     */
+    private void registerHooks(Recorder recorder) {
+        var pm = getServer().getPluginManager();
+        if (pm.getPlugin("SuperVanish") != null || pm.getPlugin("PremiumVanish") != null) {
+            pm.registerEvents(new dev.nikhey.betteraudit.hook.VanishHook(this::settings, recorder), this);
+            getSLF4JLogger().info("Hooked into SuperVanish/PremiumVanish - tracking vanish time.");
+        }
+        if (pm.getPlugin("LuckPerms") != null) {
+            dev.nikhey.betteraudit.hook.LuckPermsHook.register(this, this::settings, recorder);
+            getSLF4JLogger().info("Hooked into LuckPerms - tracking permission changes.");
+        }
+        if (pm.getPlugin("PlaceholderAPI") != null) {
+            new dev.nikhey.betteraudit.hook.AuditExpansion(this, store).register();
+            getSLF4JLogger().info("Registered PlaceholderAPI expansion (%betteraudit_*%).");
+        }
     }
 
     private void runRetention() {

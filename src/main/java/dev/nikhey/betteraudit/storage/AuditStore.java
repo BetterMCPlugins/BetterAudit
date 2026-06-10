@@ -27,7 +27,8 @@ import java.util.concurrent.TimeUnit;
  */
 public final class AuditStore {
 
-    public record Stats(Map<ActionType, Integer> counts, long totalSessionSeconds, long firstSeen, long lastSeen) {
+    public record Stats(Map<ActionType, Integer> counts, long totalSessionSeconds, long vanishSeconds,
+                        long firstSeen, long lastSeen) {
     }
 
     public record ActorSummary(UUID uuid, String name, int entries, long lastTime) {
@@ -156,6 +157,7 @@ public final class AuditStore {
             try {
                 Map<ActionType, Integer> counts = new LinkedHashMap<>();
                 long sessionSeconds = 0;
+                long vanishSeconds = 0;
                 long first = 0;
                 long last = 0;
                 try (PreparedStatement ps = conn.prepareStatement(
@@ -172,6 +174,8 @@ public final class AuditStore {
                             counts.put(type, rs.getInt("c"));
                             if (type == ActionType.SESSION_END) {
                                 sessionSeconds = rs.getLong("d");
+                            } else if (type == ActionType.VANISH) {
+                                vanishSeconds = rs.getLong("d");
                             }
                             long f = rs.getLong("f");
                             long l = rs.getLong("l");
@@ -184,7 +188,7 @@ public final class AuditStore {
                         }
                     }
                 }
-                future.complete(new Stats(counts, sessionSeconds, first, last));
+                future.complete(new Stats(counts, sessionSeconds, vanishSeconds, first, last));
             } catch (SQLException e) {
                 future.completeExceptionally(e);
             }
