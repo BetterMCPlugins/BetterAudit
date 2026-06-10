@@ -6,7 +6,9 @@ import dev.nikhey.betteraudit.model.ActionType;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.TextChannel;
 import github.scarsz.discordsrv.util.DiscordUtil;
+import org.slf4j.Logger;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 /**
@@ -18,9 +20,12 @@ import java.util.function.Supplier;
 public final class DiscordSrvSink implements AlertSink {
 
     private final Supplier<Settings> settings;
+    private final Logger logger;
+    private final AtomicBoolean warned = new AtomicBoolean();
 
-    public DiscordSrvSink(Supplier<Settings> settings) {
+    public DiscordSrvSink(Supplier<Settings> settings, Logger logger) {
         this.settings = settings;
+        this.logger = logger;
     }
 
     @Override
@@ -29,17 +34,24 @@ public final class DiscordSrvSink implements AlertSink {
         if (!s.discordSrvEnabled()) {
             return;
         }
-        DiscordSRV srv = DiscordSRV.getPlugin();
-        String channelName = s.discordSrvChannel();
-        TextChannel channel = channelName.isBlank()
-                ? srv.getMainTextChannel()
-                : srv.getDestinationTextChannelForGameChannelName(channelName);
-        if (channel == null) {
-            return;
+        try {
+            DiscordSRV srv = DiscordSRV.getPlugin();
+            String channelName = s.discordSrvChannel();
+            TextChannel channel = channelName.isBlank()
+                    ? srv.getMainTextChannel()
+                    : srv.getDestinationTextChannelForGameChannelName(channelName);
+            if (channel == null) {
+                return;
+            }
+            // Zero-width space after @ blocks accidental/abusive pings from detail text.
+            String safeDetail = detail.replace("@", "@​");
+            DiscordUtil.queueMessage(channel,
+                    "**" + type.display() + " — " + actorName + "**: " + safeDetail);
+        } catch (Throwable t) {
+            if (warned.compareAndSet(false, true)) {
+                logger.warn("Could not deliver an alert via DiscordSRV (further failures are silent): {}",
+                        t.toString());
+            }
         }
-        // Zero-width space after @ blocks accidental/abusive pings from detail text.
-        String safeDetail = detail.replace("@", "@​");
-        DiscordUtil.queueMessage(channel,
-                "**" + type.display() + " — " + actorName + "**: " + safeDetail);
     }
 }

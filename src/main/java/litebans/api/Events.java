@@ -1,10 +1,11 @@
 package litebans.api;
 
 /**
- * COMPILE-TIME STUB — excluded from the built jar (see maven-jar-plugin
- * excludes in pom.xml). The real class ships with LiteBans at runtime.
- * Listener's methods are deliberately non-abstract, mirroring the real API,
- * so subclasses override only what they need.
+ * Compile-time stub of the LiteBans API, excluded from the built jar
+ * (see the maven-jar-plugin excludes in pom.xml). At runtime the real
+ * class is provided by the LiteBans plugin. Listener's methods are
+ * non-abstract, matching the real API, so subclasses override only
+ * what they need.
  */
 @SuppressWarnings("unused")
 public class Events {

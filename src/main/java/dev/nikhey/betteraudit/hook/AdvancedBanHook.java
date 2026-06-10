@@ -50,8 +50,8 @@ public final class AdvancedBanHook {
                         ActionType.PUNISHMENT,
                         "[AdvancedBan] " + String.valueOf(type).toLowerCase() + " " + target
                                 + (reason == null || reason.isBlank() ? "" : ": " + reason));
-            } catch (ReflectiveOperationException e) {
-                logger.warn("Failed to read AdvancedBan punishment: {}", e.toString());
+            } catch (Throwable t) {
+                logger.warn("Failed to record an AdvancedBan punishment: {}", t.toString());
             }
         }, plugin, true);
         return true;

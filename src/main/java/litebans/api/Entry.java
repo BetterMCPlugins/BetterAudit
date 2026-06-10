@@ -1,10 +1,9 @@
 package litebans.api;
 
 /**
- * COMPILE-TIME STUB — excluded from the built jar (see maven-jar-plugin
- * excludes in pom.xml). At runtime the real class ships with LiteBans;
- * jitpack serves the official litebans-api artifact with a 401 these days,
- * so we compile against this minimal mirror of its public signatures.
+ * Compile-time stub of the LiteBans API, excluded from the built jar
+ * (see the maven-jar-plugin excludes in pom.xml). At runtime the real
+ * class is provided by the LiteBans plugin.
  */
 @SuppressWarnings("unused")
 public class Entry {

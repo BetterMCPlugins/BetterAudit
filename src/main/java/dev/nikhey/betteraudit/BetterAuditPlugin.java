@@ -70,37 +70,48 @@ public final class BetterAuditPlugin extends JavaPlugin {
 
     /**
      * Optional integrations. Each hook class is only loaded (and its plugin
-     * classes only touched) when the target plugin is actually installed.
+     * classes only touched) when the target plugin is actually installed, and
+     * a failing hook is dropped with a warning instead of breaking the plugin.
      */
     private void registerHooks(Recorder recorder) {
         var pm = getServer().getPluginManager();
-        if (pm.getPlugin("SuperVanish") != null || pm.getPlugin("PremiumVanish") != null) {
-            pm.registerEvents(new dev.nikhey.betteraudit.hook.VanishHook(this::settings, recorder), this);
-            getSLF4JLogger().info("Hooked into SuperVanish/PremiumVanish - tracking vanish time.");
+        if (pm.isPluginEnabled("SuperVanish") || pm.isPluginEnabled("PremiumVanish")) {
+            tryHook("SuperVanish/PremiumVanish", "tracking vanish time", () ->
+                    pm.registerEvents(new dev.nikhey.betteraudit.hook.VanishHook(this::settings, recorder), this));
         }
-        if (pm.getPlugin("Essentials") != null) {
-            pm.registerEvents(new dev.nikhey.betteraudit.hook.EssentialsHook(this::settings, recorder), this);
-            getSLF4JLogger().info("Hooked into EssentialsX - tracking balance changes and vanish.");
+        if (pm.isPluginEnabled("Essentials")) {
+            tryHook("EssentialsX", "tracking balance changes and vanish", () ->
+                    pm.registerEvents(new dev.nikhey.betteraudit.hook.EssentialsHook(this::settings, recorder), this));
         }
-        if (pm.getPlugin("LuckPerms") != null) {
-            dev.nikhey.betteraudit.hook.LuckPermsHook.register(this, this::settings, recorder);
-            getSLF4JLogger().info("Hooked into LuckPerms - tracking permission changes.");
+        if (pm.isPluginEnabled("LuckPerms")) {
+            tryHook("LuckPerms", "tracking permission changes", () ->
+                    dev.nikhey.betteraudit.hook.LuckPermsHook.register(this, this::settings, recorder));
         }
-        if (pm.getPlugin("PlaceholderAPI") != null) {
-            new dev.nikhey.betteraudit.hook.AuditExpansion(this, store).register();
-            getSLF4JLogger().info("Registered PlaceholderAPI expansion (%betteraudit_*%).");
+        if (pm.isPluginEnabled("PlaceholderAPI")) {
+            tryHook("PlaceholderAPI", "registered %betteraudit_*% placeholders", () ->
+                    new dev.nikhey.betteraudit.hook.AuditExpansion(this, store).register());
         }
-        if (pm.getPlugin("LiteBans") != null) {
-            dev.nikhey.betteraudit.hook.LiteBansHook.register(this::settings, recorder);
-            getSLF4JLogger().info("Hooked into LiteBans - tracking punishments via its API.");
+        if (pm.isPluginEnabled("LiteBans")) {
+            tryHook("LiteBans", "tracking punishments via its API", () ->
+                    dev.nikhey.betteraudit.hook.LiteBansHook.register(this::settings, recorder, getSLF4JLogger()));
         }
-        if (pm.getPlugin("AdvancedBan") != null
-                && dev.nikhey.betteraudit.hook.AdvancedBanHook.register(this, this::settings, recorder, getSLF4JLogger())) {
-            getSLF4JLogger().info("Hooked into AdvancedBan - tracking punishments via its API.");
+        if (pm.isPluginEnabled("AdvancedBan")) {
+            tryHook("AdvancedBan", "tracking punishments via its API", () ->
+                    dev.nikhey.betteraudit.hook.AdvancedBanHook.register(this, this::settings, recorder, getSLF4JLogger()));
         }
-        if (pm.getPlugin("DiscordSRV") != null) {
-            recorder.addSink(new dev.nikhey.betteraudit.hook.DiscordSrvSink(this::settings));
-            getSLF4JLogger().info("Hooked into DiscordSRV - alerts route through its channels.");
+        if (pm.isPluginEnabled("DiscordSRV")) {
+            tryHook("DiscordSRV", "alerts route through its channels", () ->
+                    recorder.addSink(new dev.nikhey.betteraudit.hook.DiscordSrvSink(this::settings, getSLF4JLogger())));
+        }
+    }
+
+    private void tryHook(String name, String what, Runnable registration) {
+        try {
+            registration.run();
+            getSLF4JLogger().info("Hooked into {} - {}.", name, what);
+        } catch (Throwable t) {
+            getSLF4JLogger().warn("Could not enable the {} integration ({}). "
+                    + "BetterAudit continues without it.", name, t.toString());
         }
     }
 

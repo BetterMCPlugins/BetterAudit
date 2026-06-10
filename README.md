@@ -71,6 +71,10 @@ mvn package
 
 Requires Java 21+. The jar lands in `target/BetterAudit-<version>.jar`. Drop it into `plugins/` on any Paper 1.21+ server.
 
+## License
+
+MIT — see [LICENSE](LICENSE).
+
 ## Roadmap
 
 - Web dashboard (paid tier)

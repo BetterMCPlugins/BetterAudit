@@ -6,6 +6,7 @@ import dev.nikhey.betteraudit.model.ActionType;
 import litebans.api.Entry;
 import litebans.api.Events;
 import org.bukkit.Bukkit;
+import org.slf4j.Logger;
 
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -20,19 +21,23 @@ public final class LiteBansHook {
     private LiteBansHook() {
     }
 
-    public static void register(Supplier<Settings> settings, Recorder recorder) {
+    public static void register(Supplier<Settings> settings, Recorder recorder, Logger logger) {
         Events.get().register(new Events.Listener() {
             @Override
             public void entryAdded(Entry entry) {
                 if (!settings.get().punishmentsEnabled()) {
                     return;
                 }
-                String executorName = entry.getExecutorName() == null ? "CONSOLE" : entry.getExecutorName();
-                UUID executorUuid = parseUuid(entry.getExecutorUUID());
-                recorder.recordOffline(executorUuid, executorName, ActionType.PUNISHMENT,
-                        "[LiteBans] " + entry.getType() + " " + targetName(entry)
-                                + (entry.getReason() == null ? "" : ": " + entry.getReason())
-                                + (entry.isPermanent() ? " (permanent)" : ""));
+                try {
+                    String executorName = entry.getExecutorName() == null ? "CONSOLE" : entry.getExecutorName();
+                    UUID executorUuid = parseUuid(entry.getExecutorUUID());
+                    recorder.recordOffline(executorUuid, executorName, ActionType.PUNISHMENT,
+                            "[LiteBans] " + entry.getType() + " " + targetName(entry)
+                                    + (entry.getReason() == null ? "" : ": " + entry.getReason())
+                                    + (entry.isPermanent() ? " (permanent)" : ""));
+                } catch (Throwable t) {
+                    logger.warn("Failed to record a LiteBans punishment: {}", t.toString());
+                }
             }
         });
     }

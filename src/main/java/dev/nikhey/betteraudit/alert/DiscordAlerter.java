@@ -38,20 +38,24 @@ public final class DiscordAlerter implements AlertSink {
                         jsonString(detail),
                         type.discordColor(),
                         jsonString(Instant.now().toString()));
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(s.webhookUrl()))
-                .timeout(Duration.ofSeconds(10))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(json))
-                .build();
-        client.sendAsync(request, HttpResponse.BodyHandlers.discarding())
-                .whenComplete((response, error) -> {
-                    if (error != null) {
-                        logger.warn("Discord webhook delivery failed: {}", error.getMessage());
-                    } else if (response.statusCode() >= 400) {
-                        logger.warn("Discord webhook returned status {}", response.statusCode());
-                    }
-                });
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(s.webhookUrl()))
+                    .timeout(Duration.ofSeconds(10))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(json))
+                    .build();
+            client.sendAsync(request, HttpResponse.BodyHandlers.discarding())
+                    .whenComplete((response, error) -> {
+                        if (error != null) {
+                            logger.warn("Discord webhook delivery failed: {}", error.getMessage());
+                        } else if (response.statusCode() >= 400) {
+                            logger.warn("Discord webhook returned status {}", response.statusCode());
+                        }
+                    });
+        } catch (IllegalArgumentException e) {
+            logger.warn("Invalid Discord webhook URL in config.yml: {}", e.getMessage());
+        }
     }
 
     private static String jsonString(String value) {
