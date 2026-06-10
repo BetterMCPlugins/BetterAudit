@@ -6,7 +6,7 @@ folia-supported: true
 author: Nikhey
 description: The black box recorder for your staff team.
 website: https://github.com/DevNikhey
-softdepend: [SuperVanish, PremiumVanish, LuckPerms, PlaceholderAPI, Essentials]
+softdepend: [SuperVanish, PremiumVanish, LuckPerms, PlaceholderAPI, Essentials, LiteBans, AdvancedBan, DiscordSRV]
 
 commands:
   audit:

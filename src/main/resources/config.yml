@@ -23,6 +23,8 @@ modules:
   inspections: true
   # Log economy admin commands and (with EssentialsX) balance changes on tracked players.
   economy: true
+  # Log WorldEdit/FAWE commands (//set, //copy, ...) as their own action type.
+  worldedit: true
   # Log vanish toggles + time spent vanished (needs SuperVanish or PremiumVanish).
   vanish: true
   # Log rank/permission changes with the staff member who made them (needs LuckPerms).
@@ -80,8 +82,8 @@ economy-commands:
 
 # Which action types trigger alerts (in-game to betteraudit.notify holders,
 # and to Discord if enabled below).
-# Available: COMMAND, GAMEMODE, CREATIVE_TAKE, OP_CHANGE, PUNISHMENT,
-#            INSPECTION, ECONOMY, VANISH, PERMISSION_CHANGE, SESSION_START, SESSION_END
+# Available: COMMAND, GAMEMODE, CREATIVE_TAKE, OP_CHANGE, PUNISHMENT, INSPECTION,
+#            ECONOMY, WORLD_EDIT, VANISH, PERMISSION_CHANGE, SESSION_START, SESSION_END
 alerts:
   - GAMEMODE
   - CREATIVE_TAKE
@@ -93,8 +95,15 @@ notify:
   ingame: true
 
 discord:
+  # Raw webhook - works without any other plugin.
   enabled: false
   webhook-url: ""
+  # DiscordSRV routing - used automatically when DiscordSRV is installed.
+  # channel: the DiscordSRV in-game channel name to post to ("" = main channel).
+  # Tip: if both the webhook and DiscordSRV are enabled, alerts go to both.
+  discordsrv:
+    enabled: true
+    channel: ""
 
 # Audit entries older than this many days are deleted automatically. 0 = keep forever.
 retention-days: 90

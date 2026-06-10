@@ -1,6 +1,6 @@
 package dev.nikhey.betteraudit;
 
-import dev.nikhey.betteraudit.alert.DiscordAlerter;
+import dev.nikhey.betteraudit.alert.AlertSink;
 import dev.nikhey.betteraudit.config.Settings;
 import dev.nikhey.betteraudit.model.ActionType;
 import dev.nikhey.betteraudit.storage.AuditStore;
@@ -10,7 +10,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Supplier;
 
 /**
@@ -24,12 +26,16 @@ public final class Recorder {
 
     private final Supplier<Settings> settings;
     private final AuditStore store;
-    private final DiscordAlerter discord;
+    private final List<AlertSink> sinks = new CopyOnWriteArrayList<>();
 
-    public Recorder(Supplier<Settings> settings, AuditStore store, DiscordAlerter discord) {
+    public Recorder(Supplier<Settings> settings, AuditStore store, AlertSink... alertSinks) {
         this.settings = settings;
         this.store = store;
-        this.discord = discord;
+        sinks.addAll(List.of(alertSinks));
+    }
+
+    public void addSink(AlertSink sink) {
+        sinks.add(sink);
     }
 
     public void record(Player actor, ActionType type, String detail, long durationSeconds) {
@@ -69,6 +75,8 @@ public final class Recorder {
                 }
             }
         }
-        discord.send(type, name, detail);
+        for (AlertSink sink : sinks) {
+            sink.send(type, name, detail);
+        }
     }
 }

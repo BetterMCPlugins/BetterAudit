@@ -58,6 +58,11 @@ public final class CommandListener implements Listener {
     }
 
     private static ActionType classify(Settings s, String root) {
+        // After the leading slash is stripped, only WorldEdit/FAWE commands
+        // still start with one: "//set ..." -> root "/set".
+        if (root.startsWith("/")) {
+            return ActionType.WORLD_EDIT;
+        }
         if (root.equals("op") || root.equals("deop")) {
             return ActionType.OP_CHANGE;
         }
@@ -79,6 +84,7 @@ public final class CommandListener implements Listener {
             case PUNISHMENT -> s.punishmentsEnabled();
             case INSPECTION -> s.inspectionsEnabled();
             case ECONOMY -> s.economyEnabled();
+            case WORLD_EDIT -> s.worldEditEnabled();
             default -> s.commandsEnabled();
         };
     }

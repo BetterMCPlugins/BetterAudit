@@ -12,7 +12,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.function.Supplier;
 
-public final class DiscordAlerter {
+public final class DiscordAlerter implements AlertSink {
 
     private final Supplier<Settings> settings;
     private final Logger logger;
@@ -25,6 +25,7 @@ public final class DiscordAlerter {
         this.logger = logger;
     }
 
+    @Override
     public void send(ActionType type, String actorName, String detail) {
         Settings s = settings.get();
         if (!s.discordEnabled()) {

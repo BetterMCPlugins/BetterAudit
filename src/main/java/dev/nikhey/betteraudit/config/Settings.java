@@ -24,6 +24,7 @@ public final class Settings {
     private final boolean modPunishments;
     private final boolean modInspections;
     private final boolean modEconomy;
+    private final boolean modWorldEdit;
     private final boolean modVanish;
     private final boolean modPermissionChanges;
     private final Set<String> ignoredCommands;
@@ -34,6 +35,8 @@ public final class Settings {
     private final boolean notifyIngame;
     private final boolean discordEnabled;
     private final String webhookUrl;
+    private final boolean discordSrvEnabled;
+    private final String discordSrvChannel;
     private final int retentionDays;
 
     private Settings(FileConfiguration c) {
@@ -46,6 +49,7 @@ public final class Settings {
         this.modPunishments = c.getBoolean("modules.punishments", true);
         this.modInspections = c.getBoolean("modules.inspections", true);
         this.modEconomy = c.getBoolean("modules.economy", true);
+        this.modWorldEdit = c.getBoolean("modules.worldedit", true);
         this.modVanish = c.getBoolean("modules.vanish", true);
         this.modPermissionChanges = c.getBoolean("modules.permission-changes", true);
         this.ignoredCommands = lowered(c.getStringList("ignored-commands"));
@@ -62,6 +66,8 @@ public final class Settings {
         this.notifyIngame = c.getBoolean("notify.ingame", true);
         this.discordEnabled = c.getBoolean("discord.enabled", false);
         this.webhookUrl = c.getString("discord.webhook-url", "");
+        this.discordSrvEnabled = c.getBoolean("discord.discordsrv.enabled", true);
+        this.discordSrvChannel = c.getString("discord.discordsrv.channel", "");
         this.retentionDays = c.getInt("retention-days", 90);
     }
 
@@ -116,6 +122,10 @@ public final class Settings {
         return modEconomy;
     }
 
+    public boolean worldEditEnabled() {
+        return modWorldEdit;
+    }
+
     public boolean vanishEnabled() {
         return modVanish;
     }
@@ -154,6 +164,14 @@ public final class Settings {
 
     public String webhookUrl() {
         return webhookUrl;
+    }
+
+    public boolean discordSrvEnabled() {
+        return discordSrvEnabled;
+    }
+
+    public String discordSrvChannel() {
+        return discordSrvChannel;
     }
 
     public int retentionDays() {

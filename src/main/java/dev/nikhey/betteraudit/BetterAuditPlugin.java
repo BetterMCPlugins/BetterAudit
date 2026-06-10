@@ -90,6 +90,18 @@ public final class BetterAuditPlugin extends JavaPlugin {
             new dev.nikhey.betteraudit.hook.AuditExpansion(this, store).register();
             getSLF4JLogger().info("Registered PlaceholderAPI expansion (%betteraudit_*%).");
         }
+        if (pm.getPlugin("LiteBans") != null) {
+            dev.nikhey.betteraudit.hook.LiteBansHook.register(this::settings, recorder);
+            getSLF4JLogger().info("Hooked into LiteBans - tracking punishments via its API.");
+        }
+        if (pm.getPlugin("AdvancedBan") != null
+                && dev.nikhey.betteraudit.hook.AdvancedBanHook.register(this, this::settings, recorder, getSLF4JLogger())) {
+            getSLF4JLogger().info("Hooked into AdvancedBan - tracking punishments via its API.");
+        }
+        if (pm.getPlugin("DiscordSRV") != null) {
+            recorder.addSink(new dev.nikhey.betteraudit.hook.DiscordSrvSink(this::settings));
+            getSLF4JLogger().info("Hooked into DiscordSRV - alerts route through its channels.");
+        }
     }
 
     private void runRetention() {

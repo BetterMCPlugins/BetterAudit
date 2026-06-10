@@ -34,6 +34,10 @@
             <id>essentialsx</id>
             <url>https://repo.essentialsx.net/releases/</url>
         </repository>
+        <repository>
+            <id>scarsz</id>
+            <url>https://nexus.scarsz.me/content/groups/public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -79,6 +83,18 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>com.discordsrv</groupId>
+            <artifactId>discordsrv</artifactId>
+            <version>1.27.0</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
 
     <build>
@@ -89,5 +105,18 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <!-- litebans.api.* are compile-time stubs; the real classes
+                         come from the LiteBans plugin at runtime. -->
+                    <excludes>
+                        <exclude>litebans/**</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>
