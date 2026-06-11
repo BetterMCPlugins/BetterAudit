@@ -36,9 +36,9 @@ LuckPerms · LiteBans · AdvancedBan · EssentialsX · SuperVanish/PremiumVanish
 
 ### Commands & permissions
 
-See the [README](https://github.com/DevNikhey/BetterAudit#commands) for the full reference. Quick start: install, grant your staff ranks `betteraudit.tracked`, done — ops are tracked automatically.
+See the [README](https://github.com/BetterMCPlugins/BetterAudit#commands) for the full reference. Quick start: install, grant your staff ranks `betteraudit.tracked`, done — ops are tracked automatically.
 
-Support: [Discord](https://discord.gg/UfnyJgbY4P) · [Issues](https://github.com/DevNikhey/BetterAudit/issues)
+Support: [Discord](https://discord.gg/UfnyJgbY4P) · [Issues](https://github.com/BetterMCPlugins/BetterAudit/issues)
 
 ---
 

@@ -78,7 +78,7 @@ Requires Java 21+. The jar lands in `target/BetterAudit-<version>.jar`. Drop it 
 
 ## Support
 
-Questions, bug reports, feature ideas — join the [Discord server](https://discord.gg/UfnyJgbY4P) or open a [GitHub issue](https://github.com/DevNikhey/BetterAudit/issues).
+Questions, bug reports, feature ideas — join the [Discord server](https://discord.gg/UfnyJgbY4P) or open a [GitHub issue](https://github.com/BetterMCPlugins/BetterAudit/issues).
 
 ## License
 
