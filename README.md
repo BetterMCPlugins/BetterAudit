@@ -1,5 +1,10 @@
 # BetterAudit
 
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Paper](https://img.shields.io/badge/Paper-1.21%2B-blue.svg)](https://papermc.io)
+[![Folia](https://img.shields.io/badge/Folia-supported-blue.svg)](https://papermc.io/software/folia)
+[![Discord](https://img.shields.io/badge/support-Discord-5865F2.svg)](https://discord.gg/UfnyJgbY4P)
+
 **The black box recorder for your staff team.** Every staff action — commands, gamemode switches, creative item grabs, op changes, punishments, sessions — logged to one queryable timeline, with real-time Discord alerts.
 
 You gave your moderators power. BetterAudit gives you visibility.
@@ -70,6 +75,10 @@ mvn package
 ```
 
 Requires Java 21+. The jar lands in `target/BetterAudit-<version>.jar`. Drop it into `plugins/` on any Paper 1.21+ server.
+
+## Support
+
+Questions, bug reports, feature ideas — join the [Discord server](https://discord.gg/UfnyJgbY4P) or open a [GitHub issue](https://github.com/DevNikhey/BetterAudit/issues).
 
 ## License
 
