@@ -80,12 +80,22 @@ Requires Java 21+. The jar lands in `target/BetterAudit-<version>.jar`. Drop it 
 
 Questions, bug reports, feature ideas — join the [Discord server](https://discord.gg/UfnyJgbY4P) or open a [GitHub issue](https://github.com/BetterMCPlugins/BetterAudit/issues).
 
+## Part of the BetterMCPlugins suite
+
+BetterAudit is one of three free, open-source staff plugins that share a design and a planned web dashboard:
+
+- **[BetterAudit](https://github.com/BetterMCPlugins/BetterAudit)** — staff action audit log *(this plugin)*
+- **[BetterReports](https://github.com/BetterMCPlugins/BetterReports)** — player reports with automatic evidence capture
+- **[BetterNotes](https://github.com/BetterMCPlugins/BetterNotes)** — staff notes and a player watchlist
+
+Run them together and the same players, staff and timeline line up across all three.
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
 
 ## Roadmap
 
-- Web dashboard (paid tier)
+- Web dashboard, shared across the suite (paid tier)
 - Velocity network sync (paid tier)
 - Bidirectional Discord bot (query the log from Discord)
