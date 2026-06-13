@@ -27,6 +27,9 @@ import java.util.concurrent.TimeUnit;
  */
 public final class AuditStore {
 
+    /** Versioned schema contract for external read-only consumers (e.g. BetterPanel). */
+    public static final int SCHEMA_VERSION = 1;
+
     public record Stats(Map<ActionType, Integer> counts, long totalSessionSeconds, long vanishSeconds,
                         long firstSeen, long lastSeen) {
     }
@@ -59,6 +62,14 @@ public final class AuditStore {
         try (Statement st = conn.createStatement()) {
             st.execute("PRAGMA journal_mode=WAL");
             st.execute("PRAGMA synchronous=NORMAL");
+            // Versioned schema contract: external readers (BetterPanel) pin a
+            // supported range against this. Seeded once, never auto-bumped.
+            st.execute("CREATE TABLE IF NOT EXISTS schema_meta (version INTEGER NOT NULL)");
+            try (ResultSet rs = st.executeQuery("SELECT version FROM schema_meta LIMIT 1")) {
+                if (!rs.next()) {
+                    st.execute("INSERT INTO schema_meta (version) VALUES (" + SCHEMA_VERSION + ")");
+                }
+            }
             st.execute("""
                     CREATE TABLE IF NOT EXISTS audit (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
